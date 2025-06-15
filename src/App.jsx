@@ -1,24 +1,33 @@
 // src/App.jsx
 import React, { useState } from 'react';
+import LoginScreen from './components/LoginScreen';
 import ScenarioSelect from './components/ScenarioSelect';
 import GameScreen from './components/GameScreen';
 import EndScreen from './components/EndScreen';
 import { getStoryForScenario } from './utils/storyGenerator';
+import { useGame } from './context/GameContext';
 
 const emojiMap = {
   'Knight Quest': '🛡️',
   'Crime Noir': '🕵️‍♂️',
   'Sci-Fi Adventure': '🚀',
   'Time Travel': '⏳',
+  'Spy Hunter': '🕶️',
 };
 
 function App() {
-  const [gameState, setGameState] = useState('select');
-  const [scenario, setScenario] = useState(null); // full name (e.g., "Knight Quest")
+  const { playerName, submitResult } = useGame();
+
+  const [gameState, setGameState] = useState('login'); // login | select | playing | win | lose
+  const [scenario, setScenario] = useState(null);
   const [story, setStory] = useState([]);
   const [endings, setEndings] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [badEndingDetails, setBadEndingDetails] = useState(null);
+
+  const handleLogin = () => {
+    setGameState('select');
+  };
 
   const startGame = async (chosenScenario) => {
     const generatedStory = await getStoryForScenario(chosenScenario);
@@ -34,6 +43,7 @@ function App() {
     const current = story[currentPhase];
     if (choiceId === current.correctChoice) {
       if (currentPhase === story.length - 1) {
+        submitResult('win');
         setGameState('win');
       } else {
         setCurrentPhase(currentPhase + 1);
@@ -46,6 +56,7 @@ function App() {
         choiceId,
         choice: current.choices.find((c) => c.id === choiceId)?.text || 'Unknown choice',
       });
+      submitResult('loss');
       setGameState('lose');
     }
   };
@@ -63,8 +74,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
+      {!playerName && <LoginScreen onLogin={handleLogin} />}
       {gameState === 'select' && <ScenarioSelect onStart={startGame} />}
-
       {gameState === 'playing' && story.length > 0 && story[currentPhase] && (
         <GameScreen
           phase={story[currentPhase]}
@@ -75,7 +86,6 @@ function App() {
           onChoice={handleChoice}
         />
       )}
-
       {(gameState === 'win' || gameState === 'lose') && (
         <EndScreen
           outcome={gameState}
