@@ -6,6 +6,7 @@ const scenarios = [
   { id: 'noir', label: '🕵️‍♂️ Crime Noir' },
   { id: 'sci-fi', label: '🚀 Sci-Fi Adventure' },
   { id: 'time', label: '⏳ Time Travel' },
+  { id: 'spy', label: '🕶️ Spy Hunter' }, // 🆕
 ];
 
 function ScenarioSelect({ onStart }) {
