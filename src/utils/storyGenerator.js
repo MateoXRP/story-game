@@ -1,6 +1,7 @@
 import getKnightQuestStory from '../data/mockStories/knightQuest';
 import getCrimeNoirStory from '../data/mockStories/crimeNoir';
 import getSciFiAdventureStory from '../data/mockStories/sciFiAdventure';
+import getTimeTravelStory from '../data/mockStories/timeTravel';
 
 export function getMockStoryForScenario(scenarioName) {
   switch (scenarioName) {
@@ -10,8 +11,10 @@ export function getMockStoryForScenario(scenarioName) {
       return getCrimeNoirStory();
     case 'Sci-Fi Adventure':
       return getSciFiAdventureStory();
+    case 'Time Travel':
+      return getTimeTravelStory();
     default:
-      return []; // fallback empty array
+      return [];
   }
 }
 

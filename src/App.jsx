@@ -9,12 +9,14 @@ function App() {
   const [scenario, setScenario] = useState(null);
   const [story, setStory] = useState([]); // Array of phases
   const [currentPhase, setCurrentPhase] = useState(0);
+  const [badEndingDetails, setBadEndingDetails] = useState(null); // track bad choice context
 
   const startGame = (chosenScenario) => {
     const generatedStory = getMockStoryForScenario(chosenScenario);
     setScenario(chosenScenario);
     setStory(generatedStory);
     setCurrentPhase(0);
+    setBadEndingDetails(null);
     setGameState('playing');
   };
 
@@ -27,6 +29,12 @@ function App() {
         setCurrentPhase(currentPhase + 1);
       }
     } else {
+      setBadEndingDetails({
+        scenario,
+        phase: currentPhase + 1,
+        text: current.text,
+        choice: current.choices.find((c) => c.id === choiceId)?.text || 'Unknown choice',
+      });
       setGameState('lose');
     }
   };
@@ -36,6 +44,7 @@ function App() {
     setScenario(null);
     setStory([]);
     setCurrentPhase(0);
+    setBadEndingDetails(null);
   };
 
   return (
@@ -54,6 +63,9 @@ function App() {
       {(gameState === 'win' || gameState === 'lose') && (
         <EndScreen
           outcome={gameState}
+          scenario={scenario}
+          finalPhase={currentPhase + 1}
+          badEndingDetails={badEndingDetails}
           onRestart={restartGame}
         />
       )}
