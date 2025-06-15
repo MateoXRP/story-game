@@ -24,18 +24,21 @@ function App() {
   const [endings, setEndings] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [badEndingDetails, setBadEndingDetails] = useState(null);
+  const [loading, setLoading] = useState(false); // <-- NEW
 
   const handleLogin = () => {
     setGameState('select');
   };
 
   const startGame = async (chosenScenario) => {
+    setLoading(true); // <-- Start loading
     const generatedStory = await getStoryForScenario(chosenScenario);
     setScenario(chosenScenario);
     setStory(generatedStory.phases);
     setEndings(generatedStory.endings);
     setCurrentPhase(0);
     setBadEndingDetails(null);
+    setLoading(false); // <-- Stop loading
     setGameState('playing');
   };
 
@@ -75,7 +78,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       {!playerName && <LoginScreen onLogin={handleLogin} />}
-      {gameState === 'select' && <ScenarioSelect onStart={startGame} />}
+      {gameState === 'select' && <ScenarioSelect onStart={startGame} loading={loading} />}
       {gameState === 'playing' && story.length > 0 && story[currentPhase] && (
         <GameScreen
           phase={story[currentPhase]}

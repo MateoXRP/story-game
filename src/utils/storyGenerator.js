@@ -4,7 +4,7 @@ import staticStoryMap from './staticStoryMap';
 
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true, // Needed for Vite/browser-based projects
+  dangerouslyAllowBrowser: true,
 });
 
 export async function getStoryForScenario(scenarioName) {
@@ -21,25 +21,19 @@ You are an AI story generator.
 Create a 5-phase interactive story that fully adheres to the genre, setting, and tone of the following scenario:
 "${scenarioName}"
 
-For example:
-- "Knight Quest" should be a medieval fantasy with knights, magic, dragons, or castles.
-- "Crime Noir" should feel like a gritty 1940s detective mystery.
-- "Sci-Fi Adventure" must be set in space or futuristic environments with AI, aliens, or tech.
-- "Time Travel" must involve historical Earth events with a character from the future trying to return home.
-
 Each phase must include:
-- A numbered phase with a short scene (1–3 sentences max), enhanced with relevant emojis for visual flavor.
-- Two choices labeled A and B, optionally using emojis.
-- Mark one choice as the correct one using "correctChoice".
+- A short vivid scene (1–3 sentences), with relevant emojis.
+- Two labeled choices (A and B), optionally with emojis.
+- Mark the correct choice with "correctChoice".
 
-At the end, include an "endings" block with:
-- A "win" string (rewarding the correct final choice, also using emojis)
-- A "losses" object with incorrect choice consequences, organized by phase and choiceId, each with a short descriptive sentence and emojis.
+At the end, include:
+- A "win" message celebrating the correct final choice (with emojis).
+- A "losses" object with a **custom message for every incorrect choice**, organized by phase number and choiceId.
 
-Use this exact JSON structure:
+Use this exact JSON format:
 ${JSON.stringify(staticStory, null, 2)}
 
-Now generate a completely new story that fits this scenario’s theme, format, and tone.
+Now generate a completely new story with all required fields.
 `;
 
   try {
@@ -50,12 +44,26 @@ Now generate a completely new story that fits this scenario’s theme, format, a
     });
 
     const content = response.choices[0].message.content.trim();
-
     const jsonStart = content.indexOf('{');
     const jsonEnd = content.lastIndexOf('}');
     const jsonText = content.slice(jsonStart, jsonEnd + 1);
-
     const generatedStory = JSON.parse(jsonText);
+
+    // 🔧 Add fallback for missing losses
+    generatedStory.endings.losses = generatedStory.endings.losses || {};
+    for (let i = 0; i < generatedStory.phases.length; i++) {
+      const phaseNum = i + 1;
+      const phase = generatedStory.phases[i];
+      const correct = phase.correctChoice;
+      const lossKey = generatedStory.endings.losses[phaseNum] ||= {};
+
+      for (const choice of phase.choices) {
+        if (choice.id !== correct && !lossKey[choice.id]) {
+          lossKey[choice.id] = `❌ You chose "${choice.text}". The story took a dark turn.`;
+        }
+      }
+    }
+
     return generatedStory;
   } catch (error) {
     console.error('❌ AI generation failed. Falling back to static story.', error);
