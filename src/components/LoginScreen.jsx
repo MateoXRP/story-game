@@ -20,7 +20,7 @@ export default function LoginScreen({ onLogin }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white px-6">
       <div className="max-w-md w-full text-center space-y-6">
-        <h1 className="text-4xl font-bold">🕹️ Story Game</h1>
+        <h1 className="text-4xl font-bold">📚 Story Game</h1>
         <p className="text-lg">Enter your name to begin</p>
         <input
           type="text"
