@@ -29,9 +29,11 @@ Each phase must include:
 
 At the end, include:
 - A "win" message celebrating the correct final choice (with emojis).
-- A "losses" object with a **custom message for every incorrect choice**, organized by phase number and choiceId.
+- A "losses" object with one **custom message for the incorrect choice per phase**.
+  - For phases 1–4: include only the **one** incorrect choice.
+  - For phase 5: include the **one** incorrect choice and the win message.
 
-❗️ IMPORTANT: Each loss message must be unique and directly tied to the player's incorrect choice and the story context of that phase. Avoid any generic or repeated fallback text like “The story took a dark turn.”
+❗️IMPORTANT: Each loss message must be specific to the player's incorrect choice and the story context of that phase. Do not repeat generic lines or leave any blank.
 
 Use this exact JSON format:
 ${JSON.stringify(staticStory, null, 2)}
@@ -41,7 +43,7 @@ Now generate a completely new story with all required fields.
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4-turbo',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.9,
     });
@@ -52,7 +54,7 @@ Now generate a completely new story with all required fields.
     const jsonText = content.slice(jsonStart, jsonEnd + 1);
     const generatedStory = JSON.parse(jsonText);
 
-    // 🔧 Add fallback for missing losses
+    // ✅ Ensure all required losses are present
     generatedStory.endings.losses = generatedStory.endings.losses || {};
     for (let i = 0; i < generatedStory.phases.length; i++) {
       const phaseNum = i + 1;
@@ -62,7 +64,7 @@ Now generate a completely new story with all required fields.
 
       for (const choice of phase.choices) {
         if (choice.id !== correct && !lossKey[choice.id]) {
-          lossKey[choice.id] = `❌ You chose "${choice.text}". Something went wrong.`;
+          lossKey[choice.id] = `⚠️ Choosing "${choice.text}" during phase ${phaseNum} led to unexpected consequences.`;
         }
       }
     }
