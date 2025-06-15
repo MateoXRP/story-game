@@ -49,6 +49,26 @@ function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, endingText
     return endingText?.win || 'You completed your quest.';
   };
 
+  const downloadLog = () => {
+    const log = {
+      player: playerName,
+      scenario,
+      outcome,
+      finalPhase,
+      badEndingDetails,
+      story: endingText,
+      phases: endingText?.phases || [], // ✅ NEW: include full story path
+      timestamp: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${playerName}_${scenario.replace(/\s+/g, '_')}_log.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="text-center max-w-3xl mx-auto space-y-6">
       <h1 className={`text-4xl font-bold ${isWin ? 'text-green-400' : 'text-red-400'}`}>
@@ -71,7 +91,7 @@ function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, endingText
         </ul>
       </div>
 
-      <div className="flex justify-center gap-4 mt-6">
+      <div className="flex justify-center gap-4 mt-6 flex-wrap">
         <button
           className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded text-white text-lg"
           onClick={onRestart}
@@ -84,10 +104,15 @@ function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, endingText
         >
           Logout
         </button>
+        <button
+          className="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded text-white text-lg"
+          onClick={downloadLog}
+        >
+          📄 Download Log
+        </button>
       </div>
     </div>
   );
 }
 
 export default EndScreen;
-

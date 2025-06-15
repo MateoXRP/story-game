@@ -13,6 +13,7 @@ const emojiMap = {
   'Sci-Fi Adventure': '🚀',
   'Time Travel': '⏳',
   'Spy Hunter': '🕶️',
+  'Mystic Adventure': '🧭',
 };
 
 function App() {
@@ -24,21 +25,24 @@ function App() {
   const [endings, setEndings] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [badEndingDetails, setBadEndingDetails] = useState(null);
-  const [loading, setLoading] = useState(false); // <-- NEW
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     setGameState('select');
   };
 
   const startGame = async (chosenScenario) => {
-    setLoading(true); // <-- Start loading
+    setLoading(true);
     const generatedStory = await getStoryForScenario(chosenScenario);
     setScenario(chosenScenario);
     setStory(generatedStory.phases);
-    setEndings(generatedStory.endings);
+    setEndings({
+      ...generatedStory.endings,
+      phases: generatedStory.phases, // ✅ Include phases for logging
+    });
     setCurrentPhase(0);
     setBadEndingDetails(null);
-    setLoading(false); // <-- Stop loading
+    setLoading(false);
     setGameState('playing');
   };
 

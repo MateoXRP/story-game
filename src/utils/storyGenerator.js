@@ -25,10 +25,13 @@ Each phase must include:
 - A short vivid scene (1–3 sentences), with relevant emojis.
 - Two labeled choices (A and B), optionally with emojis.
 - Mark the correct choice with "correctChoice".
+- Ensure the correctChoice varies across the phases (do not always use "A").
 
 At the end, include:
 - A "win" message celebrating the correct final choice (with emojis).
 - A "losses" object with a **custom message for every incorrect choice**, organized by phase number and choiceId.
+
+❗️ IMPORTANT: Each loss message must be unique and directly tied to the player's incorrect choice and the story context of that phase. Avoid any generic or repeated fallback text like “The story took a dark turn.”
 
 Use this exact JSON format:
 ${JSON.stringify(staticStory, null, 2)}
@@ -59,7 +62,7 @@ Now generate a completely new story with all required fields.
 
       for (const choice of phase.choices) {
         if (choice.id !== correct && !lossKey[choice.id]) {
-          lossKey[choice.id] = `❌ You chose "${choice.text}". The story took a dark turn.`;
+          lossKey[choice.id] = `❌ You chose "${choice.text}". Something went wrong.`;
         }
       }
     }

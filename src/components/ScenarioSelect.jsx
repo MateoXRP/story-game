@@ -7,6 +7,7 @@ const scenarios = [
   { id: 'sci-fi', label: '🚀 Sci-Fi Adventure' },
   { id: 'time', label: '⏳ Time Travel' },
   { id: 'spy', label: '🕶️ Spy Hunter' },
+  { id: 'mystic', label: '🧭 Mystic Adventure' }, // ✅ NEW
 ];
 
 function ScenarioSelect({ onStart, loading }) {
