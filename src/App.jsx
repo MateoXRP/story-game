@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ScenarioSelect from './components/ScenarioSelect';
 import GameScreen from './components/GameScreen';
 import EndScreen from './components/EndScreen';
-import { getMockStoryForScenario } from './utils/storyGenerator';
+import { getStoryForScenario } from './utils/storyGenerator';
 
 const emojiMap = {
   'Knight Quest': '🛡️',
@@ -20,8 +20,8 @@ function App() {
   const [currentPhase, setCurrentPhase] = useState(0);
   const [badEndingDetails, setBadEndingDetails] = useState(null);
 
-  const startGame = (chosenScenario) => {
-    const generatedStory = getMockStoryForScenario(chosenScenario);
+  const startGame = async (chosenScenario) => {
+    const generatedStory = await getStoryForScenario(chosenScenario);
     setScenario(chosenScenario);
     setStory(generatedStory.phases);
     setEndings(generatedStory.endings);
