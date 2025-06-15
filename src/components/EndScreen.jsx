@@ -16,6 +16,7 @@ function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, endingText
     return (
       <>
         <p className="mb-4 italic text-yellow-300">"{text}"</p>
+        <p className="mb-2 text-blue-300">You chose: <span className="font-semibold">"{choice}"</span></p>
         <p>{customEnding}</p>
       </>
     );
