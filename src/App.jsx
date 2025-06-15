@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from 'react';
 import ScenarioSelect from './components/ScenarioSelect';
 import GameScreen from './components/GameScreen';
@@ -8,13 +9,15 @@ function App() {
   const [gameState, setGameState] = useState('select'); // 'select' | 'playing' | 'win' | 'lose'
   const [scenario, setScenario] = useState(null);
   const [story, setStory] = useState([]); // Array of phases
+  const [endings, setEndings] = useState(null); // Object with win and losses
   const [currentPhase, setCurrentPhase] = useState(0);
   const [badEndingDetails, setBadEndingDetails] = useState(null); // track bad choice context
 
   const startGame = (chosenScenario) => {
     const generatedStory = getMockStoryForScenario(chosenScenario);
     setScenario(chosenScenario);
-    setStory(generatedStory);
+    setStory(generatedStory.phases);
+    setEndings(generatedStory.endings);
     setCurrentPhase(0);
     setBadEndingDetails(null);
     setGameState('playing');
@@ -33,6 +36,7 @@ function App() {
         scenario,
         phase: currentPhase + 1,
         text: current.text,
+        choiceId,
         choice: current.choices.find((c) => c.id === choiceId)?.text || 'Unknown choice',
       });
       setGameState('lose');
@@ -43,6 +47,7 @@ function App() {
     setGameState('select');
     setScenario(null);
     setStory([]);
+    setEndings(null);
     setCurrentPhase(0);
     setBadEndingDetails(null);
   };
@@ -66,6 +71,7 @@ function App() {
           scenario={scenario}
           finalPhase={currentPhase + 1}
           badEndingDetails={badEndingDetails}
+          endingText={endings}
           onRestart={restartGame}
         />
       )}

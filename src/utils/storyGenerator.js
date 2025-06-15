@@ -1,3 +1,4 @@
+// src/utils/storyGenerator.js
 import getKnightQuestStory from '../data/mockStories/knightQuest';
 import getCrimeNoirStory from '../data/mockStories/crimeNoir';
 import getSciFiAdventureStory from '../data/mockStories/sciFiAdventure';
@@ -14,7 +15,6 @@ export function getMockStoryForScenario(scenarioName) {
     case 'Time Travel':
       return getTimeTravelStory();
     default:
-      return [];
+      return { phases: [], endings: { win: '', losses: {} } };
   }
 }
-

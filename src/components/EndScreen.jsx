@@ -1,36 +1,28 @@
+// src/components/EndScreen.jsx
 import React from 'react';
 
-function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, onRestart }) {
+function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, endingText, onRestart }) {
   const isWin = outcome === 'win';
 
   const getLossMessage = () => {
     if (!badEndingDetails) return 'Your journey ends here.';
 
-    const { text, choice } = badEndingDetails;
+    const { text, choice, choiceId, phase } = badEndingDetails;
 
-    const scenarioFlavor = {
-      'Knight Quest': `Your decision — "${choice}" — was not the path of a true knight.`,
-      'Crime Noir': `Your choice — "${choice}" — left the case cold and the streets colder.`,
-      'Sci-Fi Adventure': `Your selection — "${choice}" — doomed the mission in the stars.`,
-      'Time Travel': `That action — "${choice}" — disrupted the timeline beyond repair.`,
-    };
+    const customEnding =
+      endingText?.losses?.[phase]?.[choiceId] ||
+      `Your decision — "${choice}" — was your undoing.`;
 
     return (
       <>
         <p className="mb-4 italic text-yellow-300">"{text}"</p>
-        <p>{scenarioFlavor[scenario] || 'You made the wrong choice and met your end.'}</p>
+        <p>{customEnding}</p>
       </>
     );
   };
 
   const getWinMessage = () => {
-    const endings = {
-      'Knight Quest': "You have defeated the sorcerer and restored peace to the realm.",
-      'Crime Noir': "You cracked the case and saved the girl. Justice—your way—prevails.",
-      'Sci-Fi Adventure': "You embraced the unknown and emerged changed. A legend among the stars.",
-      'Time Travel': "You've altered fate and returned home through the stream of time.",
-    };
-    return endings[scenario] || 'You completed your quest.';
+    return endingText?.win || 'You completed your quest.';
   };
 
   return (
@@ -52,4 +44,3 @@ function EndScreen({ outcome, scenario, finalPhase, badEndingDetails, onRestart 
 }
 
 export default EndScreen;
-
