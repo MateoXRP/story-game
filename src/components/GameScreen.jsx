@@ -9,9 +9,13 @@ function GameScreen({ phase, phaseIndex, totalPhases, scenario, emoji, onChoice 
         {emoji} {scenario}
       </div>
 
-      <h2 className="text-xl text-gray-400 mb-2 mt-6">
-        Phase {phaseIndex + 1} of {totalPhases}
-      </h2>
+      {/* Right-aligned Phase Display */}
+      <div className="flex justify-between items-center text-sm text-gray-400 mb-2 mt-6">
+        <div></div>
+        <div className="ml-auto text-right text-sm">
+          Phase {phaseIndex + 1} of {totalPhases}
+        </div>
+      </div>
 
       <div className="bg-gray-800 p-6 rounded shadow mb-6">
         <p className="text-lg">{phase.text}</p>
