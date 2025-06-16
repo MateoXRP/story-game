@@ -9,7 +9,9 @@ const scenarios = [
   { id: 'spy', label: '🕶️ Spy Hunter' },
   { id: 'mystic', label: '🧭 Mystic Adventure' },
   { id: 'west', label: '🤠 Wild West' },
-  { id: 'kungfu', label: '🥷 Kung Fu Showdown' }, // ✅ Updated emoji
+  { id: 'kungfu', label: '🥷 Kung Fu Showdown' },
+  { id: 'haunted', label: '🏚️ Haunted House' },
+  { id: 'romcom', label: '💘 Rom Com' }, // ✅ Added
 ];
 
 function ScenarioSelect({ onStart, loading }) {

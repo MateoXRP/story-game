@@ -13,15 +13,17 @@ const emojiMap = {
   'Sci-Fi Adventure': '🚀',
   'Time Travel': '⏳',
   'Spy Hunter': '🕶️',
-  'Mystic Adventure': '🧭', // ✅ Correct original emoji
+  'Mystic Adventure': '🧭',
   'Wild West': '🤠',
-  'Kung Fu Showdown': '🥷', // ✅ Added with corrected emoji
+  'Kung Fu Showdown': '🥷',
+  'Haunted House': '🏚️',
+  'Rom Com': '💘', // ✅ Added
 };
 
 function App() {
   const { playerName, submitResult } = useGame();
 
-  const [gameState, setGameState] = useState('login'); // login | select | playing | win | lose
+  const [gameState, setGameState] = useState('login');
   const [scenario, setScenario] = useState(null);
   const [story, setStory] = useState([]);
   const [endings, setEndings] = useState(null);
@@ -40,7 +42,7 @@ function App() {
     setStory(generatedStory.phases);
     setEndings({
       ...generatedStory.endings,
-      phases: generatedStory.phases, // ✅ Include phases for logging
+      phases: generatedStory.phases,
     });
     setCurrentPhase(0);
     setBadEndingDetails(null);

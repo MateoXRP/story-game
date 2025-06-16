@@ -6,7 +6,9 @@ import getTimeTravelStory from '../data/mockStories/timeTravel';
 import getSpyHunterStory from '../data/mockStories/spyHunter';
 import getMysticAdventureStory from '../data/mockStories/mysticAdventure';
 import getWildWestStory from '../data/mockStories/wildWest';
-import getKungFuShowdownStory from '../data/mockStories/kungFuShowdown'; // ✅
+import getKungFuShowdownStory from '../data/mockStories/kungFuShowdown';
+import getHauntedHouseStory from '../data/mockStories/hauntedHouse';
+import getRomComStory from '../data/mockStories/romCom'; // ✅ New
 
 const staticStoryMap = {
   'Knight Quest': getKnightQuestStory,
@@ -17,6 +19,8 @@ const staticStoryMap = {
   'Mystic Adventure': getMysticAdventureStory,
   'Wild West': getWildWestStory,
   'Kung Fu Showdown': getKungFuShowdownStory,
+  'Haunted House': getHauntedHouseStory,
+  'Rom Com': getRomComStory, // ✅ Added
 };
 
 export default staticStoryMap;
