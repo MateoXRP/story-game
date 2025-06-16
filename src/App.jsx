@@ -15,6 +15,7 @@ const emojiMap = {
   'Spy Hunter': '🕶️',
   'Mystic Adventure': '🧭', // ✅ Correct original emoji
   'Wild West': '🤠',
+  'Kung Fu Showdown': '🥷', // ✅ Added with corrected emoji
 };
 
 function App() {
