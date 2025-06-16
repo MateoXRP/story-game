@@ -13,7 +13,8 @@ const emojiMap = {
   'Sci-Fi Adventure': '🚀',
   'Time Travel': '⏳',
   'Spy Hunter': '🕶️',
-  'Mystic Adventure': '🧭',
+  'Mystic Adventure': '🧭', // ✅ Correct original emoji
+  'Wild West': '🤠',
 };
 
 function App() {

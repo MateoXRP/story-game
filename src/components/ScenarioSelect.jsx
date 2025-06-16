@@ -7,7 +7,8 @@ const scenarios = [
   { id: 'sci-fi', label: '🚀 Sci-Fi Adventure' },
   { id: 'time', label: '⏳ Time Travel' },
   { id: 'spy', label: '🕶️ Spy Hunter' },
-  { id: 'mystic', label: '🧭 Mystic Adventure' }, // ✅ NEW
+  { id: 'mystic', label: '🧭 Mystic Adventure' }, // ✅ Correct emoji restored
+  { id: 'west', label: '🤠 Wild West' },
 ];
 
 function ScenarioSelect({ onStart, loading }) {
